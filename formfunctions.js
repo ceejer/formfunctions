@@ -701,6 +701,7 @@ $(document).ready(function(){
   $('.noinput').on('focus', function(){
     $(this).blur();
   });
+	TimeChooser();
 });
 $(document).on('focus click', 'input.jdatepicker',  function(){
   $(this).datepicker({
@@ -1211,7 +1212,7 @@ function calcDurationDates(d, d2) {
   } else
     return null;
 }
-function TimePicker(selector, incr, hr24) {
+function TimeChooser(selector, incr, hr24) {
   var steps = 900;
   var militarytime = false;
   var timePicker = $('.timePicker');
@@ -1241,7 +1242,7 @@ function TimePicker(selector, incr, hr24) {
       currHour = sdf.getHours();
       currMin = sdf.getMinutes();
     }
-    var divhldr = $("<div />").uniqueId();
+    var divhldr = $("<div />");
     var lft = $ths.position().left;
     if(isNaN(lft))
       lft = 0;
