@@ -1250,8 +1250,8 @@ function TimeChooser(selector, incr, hr24) {
     var tp = $ths.position().top;
     if(isNaN(tp))
       tp = 0;
-    divhldr.addClass("TimePick");
-    divhldr.css({left:lft,top:tp});
+    
+    divhldr.css({left:lft,top:tp,position:'absolute', padding:'1em',  background:'#fff', border:'solid thin #ddd'});
     var hourDrop = $("<select class=\"TimePicker PickHour\" />");
     var hourRng = (militarytime ? 23 : 12);
     var hourStrt = (militarytime ? 0 : 1);
