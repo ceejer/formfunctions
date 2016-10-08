@@ -1402,3 +1402,7 @@ String.prototype.toProperCase = function(){
 return this.toLowerCase().replace( /\b((m)(a?c))?(\w)/g,
 function($1, $2, $3, $4, $5) { if($2){return $3.toUpperCase()+$4+$5.toUpperCase();} return $1.toUpperCase(); });
 }
+
+function runProperCase(ele){
+return ele.value= ele.value.toProperCase();
+}
