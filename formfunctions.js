@@ -17,36 +17,39 @@ function subOptions(element, matchesValue, elementid, invert, action) {
     if (typeof action === "undefined")
         action = "show";
     var typ = "";
-    var res = [];//retain elements selected
+    var res = []; //retain elements selected
     var siblings = [];
-    try { typ = element.type; } catch (e) { typ = e.toString(); }
+    try {
+        typ = element.type;
+    } catch (e) {
+        typ = e.toString();
+    }
     if (typ == "checkbox" || typ == "radio" && typeof element.name != "undefined" && element.name != "") {
         siblings = document.getElementsByName(element.name);
-        $("input[name=" + element.name + "]:checked").each(
-          function () { res.push(this.value); }
-        );
+        $("input[name=" + element.name + "]:checked").each(function() {
+            res.push(this.value);
+        });
     } else if (typ == "select-multiple") {
         for (var m = 0; m < element.options.length; m++) {
             siblings.push(element.options[m]);
         }
         if (typeof element.name != "undefined" && element.name != "") {
-            $("select[name=" + element.name + "] :selected").each(
-              function () { res.push(this.value); }
-            );
+            $("select[name=" + element.name + "] :selected").each(function() {
+                res.push(this.value);
+            });
         }
         if (typeof element.id != "undefined" && element.id != "") {
-            $("select#" + element.id + " :selected").each(
-              function () { res.push(this.value); }
-            );
+            $("select#" + element.id + " :selected").each(function() {
+                res.push(this.value);
+            });
         }
     } else if (typ == "select-one") {
         var vl = $(element).val();
-            res.push(vl);
+        res.push(vl);
         for (var m = 0; m < element.options.length; m++) {
             siblings.push(element.options[m]);
         }
-    }
-    else {
+    } else {
         res.push($(element).val());
         siblings.push(element);
     }
@@ -54,29 +57,26 @@ function subOptions(element, matchesValue, elementid, invert, action) {
     if (res.length > 0) {
         if (elementid != null && matchesValue != null) {
             var trgt = findelement(elementid);
-            }
+        }
         if (typeof trgt !== "undefined" && trgt.length > 0) {
-                if (matchesValue == "*") {
-                    if ($.trim(res[i]) !== "")
-                        subOptCase(trgt, !invert, action);
-                    else 
-                        subOptCase(trgt, invert, action);
-                } else if (matchesValue == "!") {
-                    if ($.trim(res[i]) !== "")
-                        subOptCase(trgt, invert, action);
-                    else
-                        subOptCase(trgt, !invert, action);
-                    
-                } else {
+            if (matchesValue == "*") {
+                if ($.trim(res[i]) !== "")
+                    subOptCase(trgt, !invert, action);
+                else
+                    subOptCase(trgt, invert, action);
+            } else if (matchesValue == "!") {
+                if ($.trim(res[i]) !== "")
+                    subOptCase(trgt, invert, action);
+                else
+                    subOptCase(trgt, !invert, action);
+            } else {
                 for (var i = 0; i < res.length; i++) {
                     if (matches(res[i], matchesValue)) {
                         subOptCase(trgt, invert, action);
                         break;
-                    }
-                    else
+                    } else
                         subOptCase(trgt, !invert, action);
                 }
-            
             }
         } else {
             loopsiblings = true;
@@ -95,8 +95,7 @@ function subOptions(element, matchesValue, elementid, invert, action) {
             showElement = $("#" + elementid);
             if (showElement.length == 0)
                 showElement = $("." + elementid);
-        }
-        else if (elementid instanceof jQuery)
+        } else if (elementid instanceof jQuery)
             showElement = elementid;
         if (showElement !== null && showElement.length) {
             subOptCase(showElement, !invert, action);
@@ -123,8 +122,7 @@ function subOptions(element, matchesValue, elementid, invert, action) {
                             if ((matchesValue == null && siblings[j].value == res[i]) || (matches(res[i], matchesValue) && matches(siblings[j].value, matchesValue))) {
                                 subOptCase(findElement, invert, action);
                                 break;
-                            }
-                            else
+                            } else
                                 subOptCase(findElement, !invert, action);
                         }
                     }
@@ -186,7 +184,7 @@ function disableInputs(elem, invert) {
     if (findElement != null) {
         if (findElement.length) {
             resetElementValues(findElement);
-            findElement.find('input, select, textarea').each(function () {
+            findElement.find('input, select, textarea').each(function() {
                 $(this).prop("disabled", !invert);
             });
         }
@@ -202,10 +200,10 @@ function resetElementValues(obj, keepDefault) {
         keepDefault = true;
     if (obj != null) {
         var div = findelement(obj);
-        div.find(':input').each(function (index, ele) {
+        div.find(':input').each(function(index, ele) {
             var elem = $(ele);
             if (elem.is("select")) {
-                elem.find('option').each(function (i, opt) {
+                elem.find('option').each(function(i, opt) {
                     opt.selected = keepDefault ? opt.defaultSelected : $(opt).prop('selectedIndex', 0);
                 });
             } else if (elem.is(":text, textarea") && elem.prop("defaultValue") != null && elem.val() != elem.prop("defaultValue")) {
@@ -293,7 +291,7 @@ function matches(obja, objb, contains) {
                         retvalue = true;
                 }
             }
-        } catch (e) { }
+        } catch (e) {}
     }
     return retvalue;
 }
@@ -344,7 +342,7 @@ function arrayIndexOf(obja, objb, contains) {
                     }
                 }
             }
-        } catch (e) { }
+        } catch (e) {}
     }
     if (retArr.length > 0)
         return retArr;
@@ -368,8 +366,7 @@ function blank(field) {
             if (fieldname.indexOf("empty") >= 0) {
                 isblank = "Field is empty";
             }
-        }
-        else if (fieldname.indexOf("email") >= 0) {
+        } else if (fieldname.indexOf("email") >= 0) {
             var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
             var isValid = filter.test(content);
             if (!isValid) {
@@ -451,78 +448,84 @@ function blank(field) {
 /**********************
 all pages startup scripts
 **********************/
-$(document).ready(function () {
-    $('.expandretract').on("keyup", function () {
+$(document).ready(function() {
+    $('.expandretract').on("keyup", function() {
         var thd = $(this)[0];
-        var totalHeight = 0, currentHeight = 0;
+        var totalHeight = 0,
+            currentHeight = 0;
         if (typeof thd.clientHeight != "undefined")
             currentHeight = thd.clientHeight;
         if (typeof thd.scrollHeight != "undefined")
             totalHeight = thd.scrollHeight;
         if (currentHeight < totalHeight)
             $(this).css({
-                height: totalHeight
-            });
-    }).focus(function () {
+                    height: totalHeight
+                });
+    }).focus(function() {
         var thd = $(this)[0];
-        var totalHeight = 0, currentHeight = 0;
+        var totalHeight = 0,
+            currentHeight = 0;
         if (typeof thd.clientHeight != "undefined")
             currentHeight = thd.clientHeight;
         if (typeof thd.scrollHeight != "undefined")
             totalHeight = thd.scrollHeight;
         if (currentHeight < totalHeight)
             $(this).css({
-                height: totalHeight
-            });
-    }).blur(function () {
+                    height: totalHeight
+                });
+    }).blur(function() {
         var rw = $(this)[0].rows;
         if (typeof rw == "undefined" || rw == 0 || rw == null)
             rw = 1;
         $(this).css({
-            height: rw * 14
-        });
+                height: rw * 14
+            });
     });
-    $('textarea.autoexpand, div.autoexpand, li.autoexpand, p.autoexpand').on("keyup change", function () {
+    $('textarea.autoexpand, div.autoexpand, li.autoexpand, p.autoexpand').on("keyup change", function() {
         var thd = $(this)[0];
-        var totalHeight = 0, currentHeight = 0;
+        var totalHeight = 0,
+            currentHeight = 0;
         if (typeof thd.clientHeight != "undefined")
             currentHeight = thd.clientHeight;
         if (typeof thd.scrollHeight != "undefined")
             totalHeight = thd.scrollHeight;
         if (currentHeight < totalHeight)
             $(this).css({
-                height: totalHeight
-            });
+                    height: totalHeight
+                });
     });
-    $(':text.autoexpand').on("keyup change", function () {
+    $(':text.autoexpand').on("keyup change", function() {
         var thd = $(this);
-        var totalWidth = thd.parent().width(), currentWidth = 0;
+        var totalWidth = thd.parent().width(),
+            currentWidth = 0;
         currentWidth = thd.width ? thd.width : (thd.clientWidth ? thd.clientWidth : 0);
         if (currentWidth < totalWidth)
             $(this).css({
-                width: totalWidth
-            });
+                    width: totalWidth
+                });
     });
-    $('textarea.autoexpand, div.autoexpand, li.autoexpand, p.autoexpand').each(function () {
+    $('textarea.autoexpand, div.autoexpand, li.autoexpand, p.autoexpand').each(function() {
         var thd = $(this)[0];
-        var totalHeight = 0, currentHeight = 0;
+        var totalHeight = 0,
+            currentHeight = 0;
         if (typeof thd.clientHeight != "undefined")
             currentHeight = thd.clientHeight;
         if (typeof thd.scrollHeight != "undefined")
             totalHeight = thd.scrollHeight;
         if (currentHeight < totalHeight)
             $(this).css({
-                height: totalHeight
-            });
+                    height: totalHeight
+                });
     });
-    $(':text.autoexpand').each(function () {
+    $(':text.autoexpand').each(function() {
         var thd = $(this);
-        var totalWidth = thd.parent().width(), currentWidth = 0;
+        var totalWidth = thd.parent().width(),
+            currentWidth = 0;
         currentWidth = thd.width ? thd.width : (thd.clientWidth ? thd.clientWidth : 0);
         if (currentWidth < totalWidth)
             $(this).css({
-                width: totalWidth
-            });
+                    width: totalWidth
+                });
     });
     /*********************************
   //use in the following
@@ -530,7 +533,7 @@ $(document).ready(function () {
   <textarea class="remainder" words="200"></textarea>
   <textarea class="remainder"></textarea> //assumes 255 characters
   ******************************/
-    $('textarea.remainder, input.remainder').on("keyup", function () {
+    $('textarea.remainder, input.remainder').on("keyup", function() {
         var cnt = 255;
         var wrds = 0;
         var sz = this.value.length;
@@ -556,8 +559,7 @@ $(document).ready(function () {
                     showspan.addClass("error");
                 else
                     showspan.removeClass("error");
-            }
-            else {
+            } else {
                 var sp = $("<span>");
                 sp.html("Words Remaining: " + (wrds));
                 sp.addClass("smaller remainder" + ((sz > wrds) ? " error" : ""));
@@ -575,17 +577,17 @@ $(document).ready(function () {
             }
         }
     });
-    $('.noinput').on('focus', function () {
+    $('.noinput').on('focus', function() {
         $(this).blur();
     });
     TimeChooser();
 });
-$(document).on('focus click', 'input.jdatepicker', function () {
+$(document).on('focus click', 'input.jdatepicker', function() {
     $(this).datepicker({
-        yearRange: "-100:+5",
-        changeMonth: true,
-        changeYear: true
-    });
+            yearRange: "-100:+5",
+            changeMonth: true,
+            changeYear: true
+        });
 });
 /*********************************
 function QuickSubmitReturn(){
@@ -620,7 +622,6 @@ function replaceSpecialChars(ele, keepopenhtmltags) {
     if (typeof keepopenhtmltags == "undefined") {
         keepopenhtmltags = true;
     }
-    
     var s = "";
     if (typeof ele == "string") {
         s = ele;
@@ -628,7 +629,7 @@ function replaceSpecialChars(ele, keepopenhtmltags) {
     if (typeof ele == "object") {
         s = ele.value;
     }
-    if (s!=null && s.length > 0) {
+    if (s != null && s.length > 0) {
         // smart single quotes and apostrophe
         s = s.replace(/[\u2018\u2019\u201A]/g, "\'");
         // smart double quotes
@@ -654,7 +655,10 @@ function replaceSpecialChars(ele, keepopenhtmltags) {
 }
 function parseTime(s) {
     var part = s.match(/(\d+):(\d+)(:(\d+))?/i);
-    var hh = 0, mm = 0, ss = 0, ap = "";
+    var hh = 0,
+        mm = 0,
+        ss = 0,
+        ap = "";
     if (part != null && part[1] != null && part[1].length > 0)
         hh = parseInt(part[1], 10);
     if (part != null && part[2] != null && part[2].length > 0)
@@ -675,7 +679,11 @@ function parseTime(s) {
             hh += 12;
         }
     }
-    return { hh: hh, mm: mm, ss: ss };
+    return {
+        hh: hh,
+        mm: mm,
+        ss: ss
+    };
 }
 function runTimer(d2) {
     var d = new Date();
@@ -692,31 +700,26 @@ function runTimer(d2) {
     msec -= ss * 1000;
     var dur = hh + ":" + (mm > 9 ? mm : "0" + mm) + ":" + (ss > 9 ? ss : "0" + ss);
     var endtm = d.toLocaleTimeString();
-    return { duration: dur, endtime: endtm }
+    return {
+        duration: dur,
+        endtime: endtm
+    }
 }
-
 // call it from a field onchange event
 // <input type="text" class="jdatepicker" onchange="AgeCalc(this,'Element_Id_for_Result')"
-
 // call it from a script
 // var age = AgeCalc("01/15/1942")
-
 // or set your own date fields
 // var age = AgeCalc("November 03, 1981", null, "January 1,2020"); 
 // alert(age);
-
 // pass your own date objects too
 // var day1 = new Date(date);
 // var d = new Date();
 // d.setFullYear(2020, 11, 14); // set date to December 14, 2020
 // var newage = AgeCalc(day1, null, d);
 // Dont forget to pass a NULL if you want a return value instead
-
-
 function AgeCalc(elem, divid, nxelem, options) {
     var dateFormat = "mm/dd/yy";
-    if (jdateformat != null && jdateformat.length > 0)
-        dateFormat = jdateformat;
     if (typeof elem != "undefined" && elem != null) {
         var fromdate, todate;
         if ($.type(elem) === "date")
@@ -725,12 +728,12 @@ function AgeCalc(elem, divid, nxelem, options) {
             var isdt = $.datepicker.parseDate(dateFormat, elem);
             if (isdt != null && !isNaN(isdt)) {
                 fromdate = isdt;
-            } else {
+            } 
+        }else if ($.type(elem) === "object")  {
                 var val = findvalue(elem);
                 if (val != null && val.length > 0)
                     fromdate = $.datepicker.parseDate(dateFormat, val);
             }
-        }
         if ($.type(fromdate) !== "date" || isNaN(fromdate))
             return;
         if (nxelem != null) {
@@ -756,7 +759,6 @@ function AgeCalc(elem, divid, nxelem, options) {
             mdiff = m[0] - m[1],
             d = [todate.getDate(), fromdate.getDate()],
             ddiff = d[0] - d[1];
-
         if (mdiff < 0 || (mdiff === 0 && ddiff < 0))--ydiff;
         if (mdiff < 0) mdiff += 12;
         if (ddiff < 0) {
@@ -780,7 +782,6 @@ function AgeYear(elem, divid, nxelem) {
 function AgeMonth(elem, divid, nxelem) {
     AgeCalc(elem, divid, nxelem, "noday");
 }
-
 /// return objects value
 /// setter only takes string to set the value or text of the object
 /// var x = findvalue('abc123'); looks for an element with an id of abc123
@@ -800,22 +801,19 @@ function findvalue(itm, setter) {
                 var inputtype = $pass.prop("type");
                 if (matches(inputtype, ['checkbox', 'radio'])) {
                     if (setit) {
-                        var el = $pass.filter(function () {
+                        var el = $pass.filter(function() {
                             return matches($(this).val(), (inputtype == 'checkbox') ? setter.split(',') : setter);
-
                         });
                         el.prop("checked", true);
                     } else {
                         return $pass.filter(":checked").val();
                     }
-                }
-                else if (matches(inputtype, ['select-one', 'select-multiple'])) {
+                } else if (matches(inputtype, ['select-one', 'select-multiple'])) {
                     if (setit) {
-                        $pass.find('option').each(function () {
+                        $pass.find('option').each(function() {
                             if (matches($(this).val(), (inputtype == 'select-multiple') ? setter.split(',') : setter))
                                 $(this).prop("selected", true);
                         });
-
                     } else {
                         return $pass.filter(":selected").val();
                     }
@@ -835,10 +833,8 @@ function findvalue(itm, setter) {
             }
         }
     }
-
     return null;
 }
-
 /// return jQuery object 
 /// finds element by id or css selector or just returns jQuery object back if passed in
 function findelement(itm) {
@@ -850,19 +846,16 @@ function findelement(itm) {
             if ($pass != null && $pass.length == 0)
                 $pass = $("#" + itm);
             if ($pass != null && $pass.length == 0)
-                $pass = $("[name='" + itm.replace(/'/g,"''") + "']");
+                $pass = $("[name='" + itm.replace(/'/g, "''") + "']");
         } else if ($.type(itm) === "object") {
             if (itm instanceof jQuery)
                 $pass = itm;
             else if (itm instanceof Element)
                 $pass = $(itm);
         }
-
     }
-
     return $pass;
 }
-
 function printDiv(divid) {
     var divToPrint = findelement(divid);
     if (divToPrint != null && divToPrint.length > 0) {
@@ -872,13 +865,11 @@ function printDiv(divid) {
         newWin.print();
     }
 }
-
 function carryoverdrop(select1, select2, select3, parentHide) {
     var addhide = false;
     if ($.type(select3) == "boolean") {
         addhide = select3;
-    }
-    else if ($.type(parentHide) == "boolean") {
+    } else if ($.type(parentHide) == "boolean") {
         addhide = parentHide;
     }
     var drop1 = findelement(select1);
@@ -894,7 +885,7 @@ function carryoverdrop(select1, select2, select3, parentHide) {
             drop3list = drop3.find('option').clone();
         }
         var drop2list = drop2.find('option').clone();
-        drop1.on('change', function () {
+        drop1.on('change', function() {
             var selectedDrop2 = $(this).find('option:selected');
             if (selectedDrop2 != null && selectedDrop2 != "") {
                 var availdrop2 = selectedDrop2.val();
@@ -909,35 +900,33 @@ function carryoverdrop(select1, select2, select3, parentHide) {
                         drop3.parent().hide();
                     drop3.val('');
                 }
-                drop2.html(drop2list.filter(function () {
-                    var cls = $(this).attr("class");
-                    var mm = -1;
-                    if (cls != null)
-                        mm = $.inArray(availdrop2, cls.split(/[\t ,]+/));
-                    else if ($(this).val() == "")
-                        mm = 1;
-                    return mm >= 0;
-                }));
+                drop2.html(drop2list.filter(function() {
+                            var cls = $(this).attr("class");
+                            var mm = -1;
+                            if (cls != null)
+                                mm = $.inArray(availdrop2, cls.split(/[\t ,]+/));
+                            else if ($(this).val() == "")
+                                mm = 1;
+                            return mm >= 0;
+                        }));
                 var nwDropOptn = drop2.find('option');
-
                 if (nwDropOptn.length > 0) {
-                    nwDropOptn.each(function(i,el){
+                    nwDropOptn.each(function(i, el) {
                         if ($(el).prop("selected")) {
                             drop2.val(el.value);
                             if (drop2.hasClass("comboboxsource"))
                                 drop2.next().find("input").val(el.value);
                         }
                     });
-                } else if(nwDropOptn.length==1) {
+                } else if (nwDropOptn.length == 1) {
                     nwDropOptn.prop("selected", true);
                 } else {
                     drop2.val('');
                 }
             }
         });
-
         if (drop3 != null && drop3.length > 0 && (drop3.prop('type') == 'select-one' || drop3.prop('type') == 'select-multiple')) {
-            drop2.on('change', function () {
+            drop2.on('change', function() {
                 var $whichdrop2 = $(this).find('option:selected');
                 if ($whichdrop2 != null && $whichdrop2 != "") {
                     var drop2Val = $whichdrop2.val();
@@ -947,18 +936,18 @@ function carryoverdrop(select1, select2, select3, parentHide) {
                         drop3.parent().show();
                         drop3.html(drop3list);
                     }
-                    drop3.html(drop3list.filter(function () {
-                        var pgm = $(this).attr("class");
-                        var tt = -1;
-                        if (pgm != null)
-                            tt = $.inArray(drop2Val, pgm.split(" "));
-                        else if ($(this).val() == "")
-                            tt = 1;
-                        return tt >= 0;
-                    }));
+                    drop3.html(drop3list.filter(function() {
+                                var pgm = $(this).attr("class");
+                                var tt = -1;
+                                if (pgm != null)
+                                    tt = $.inArray(drop2Val, pgm.split(" "));
+                                else if ($(this).val() == "")
+                                    tt = 1;
+                                return tt >= 0;
+                            }));
                     var nxDropOptn = drop3.find('option');
                     if (nxDropOptn.length > 0) {
-                        nxDropOptn.each(function (i, el) {
+                        nxDropOptn.each(function(i, el) {
                             if ($(el).prop("selected"))
                                 drop3.val(el.value);
                         });
@@ -974,24 +963,21 @@ function carryoverdrop(select1, select2, select3, parentHide) {
         drop1.trigger("change");
     }
 }
-
 /**** 
-  * TimePicker
-  * with 15 minute increments
-  * TimePicker(15);
-  * military time with every minute
-  * TimePicker(1,true);
-  * set a custom selector
-  * TimePicker("#thisFieldID, #andThisOne",1,true);
-  ****/
-
+ * TimePicker
+ * with 15 minute increments
+ * TimePicker(15);
+ * military time with every minute
+ * TimePicker(1,true);
+ * set a custom selector
+ * TimePicker("#thisFieldID, #andThisOne",1,true);
+ ****/
 function calcDurationDates(d, d2) {
     if ($.type(d) == "date" && $.type(d2) == "date" && !isNaN(d) && !isNaN(d2)) {
         if (d2 < d) {
             d.setDate(d.getDate() - 1);
         }
         var diff = d2 - d;
-
         var msec = diff;
         var hh = Math.floor(msec / 1000 / 60 / 60);
         msec -= hh * 1000 * 60 * 60;
@@ -1000,7 +986,6 @@ function calcDurationDates(d, d2) {
         var ss = Math.floor(msec / 1000);
         msec -= ss * 1000;
         var dur = hh + ":" + (mm > 9 ? mm : "0" + mm);
-
         return dur;
     } else
         return null;
@@ -1025,11 +1010,11 @@ function TimeChooser(selector, incr, hr24) {
     }
     if (hr24 != null && $.type(hr24) == "boolean")
         militarytime = hr24;
-
-    timePicker.each(function () {
+    timePicker.each(function() {
         var $ths = $(this);
         var thsvl = $ths.val();
-        var currHour = "", currMin = "";
+        var currHour = "",
+            currMin = "";
         if (thsvl != null && $.trim(thsvl).length > 0) {
             var sdf = new Date("01/01/2020 " + thsvl);
             currHour = sdf.getHours();
@@ -1043,12 +1028,17 @@ function TimeChooser(selector, incr, hr24) {
         var tp = $ths.position().top;
         if (isNaN(tp))
             tp = 0;
-
-        divhldr.css({ left: lft, top: tp, position: 'absolute', padding: '1em', background: '#fff', border: 'solid thin #ddd' });
+        divhldr.css({
+                left: lft,
+                top: tp,
+                position: 'absolute',
+                padding: '1em',
+                background: '#fff',
+                border: 'solid thin #ddd'
+            });
         var hourDrop = $("<select class=\"TimePicker PickHour\" />");
         var hourRng = (militarytime ? 23 : 12);
         var hourStrt = (militarytime ? 0 : 1);
-
         if (!militarytime) {
             if (currHour > 12)
                 currHour = currHour - 12;
@@ -1062,7 +1052,7 @@ function TimeChooser(selector, incr, hr24) {
             hourDrop.append(hrOpt);
         }
         var minDrop = $("<select class=\"TimePicker PickMinute\" />");
-        for (var m = 0; m < (60 * 60) ; m = m + steps) {
+        for (var m = 0; m < (60 * 60); m = m + steps) {
             var mnOpt = $("<option />");
             mnOpt.val((m / 60));
             mnOpt.text((m / 60));
@@ -1086,17 +1076,16 @@ function TimeChooser(selector, incr, hr24) {
             pamDrop.append(pmOpt);
             divhldr.append(pamDrop);
         }
-        hourDrop.add(minDrop).add(pamDrop).on('click', function () {
+        hourDrop.add(minDrop).add(pamDrop).on('click', function() {
             var newt = zt10(hourDrop.val()) + "" + zt10(minDrop.val()) + "";
             if (!militarytime)
                 newt = hourDrop.val() + ":" + zt10(minDrop.val()) + " " + pamDrop.val();
             $ths.val(newt);
             $ths.trigger("change");
         });
-
         divhldr.hide();
         $ths.after(divhldr);
-        $ths.on('focus', function () {
+        $ths.on('focus', function() {
             divhldr.show();
             var $fcs = $(this);
             var fcsvl = $fcs.val();
@@ -1117,7 +1106,7 @@ function TimeChooser(selector, incr, hr24) {
             if (curMin != null && curMin.length > 0)
                 divhldr.find(".PickMinute").val(curMin);
         });
-        $ths.on('change', function () {
+        $ths.on('change', function() {
             var hrDrop = divhldr.find(".PickHour");
             var mnDrop = divhldr.find(".PickMinute");
             var pmDrop = divhldr.find(".PickPAM");
@@ -1127,13 +1116,15 @@ function TimeChooser(selector, incr, hr24) {
                 newt = hrDrop.val() + ":" + zt10(mnDrop.val()) + " " + pmDrop.val();
             $blr.val(newt);
         });
-        $ths.on('keyup', function (e) {
+        $ths.on('keyup', function(e) {
             var $kyp = $(this);
             var str = $kyp.val();
             var hrDrop = divhldr.find(".PickHour");
             var mnDrop = divhldr.find(".PickMinute");
             var pmDrop = divhldr.find(".PickPAM");
-            var crHr = "", crMn = "0", crPAM = "AM";
+            var crHr = "",
+                crMn = "0",
+                crPAM = "AM";
             switch (e.which) {
                 case 9:
                 case 10:
@@ -1153,6 +1144,12 @@ function TimeChooser(selector, incr, hr24) {
                         }
                         if (res[3] != null && res[3].length > 0)
                             crPAM = $.trim(res[3]).replace(/([a|p])m?/i, "$1m").toUpperCase();
+                        if (!militarytime && crHr > 12) {
+                            var intHr = parseInt(crHr);
+                            intHr -= 12;
+                            crPAM = "PM";
+                            crHr = intHr + "";
+                        }
                     }
                     break;
             }
@@ -1164,7 +1161,6 @@ function TimeChooser(selector, incr, hr24) {
                     pmDrop.val(crPAM);
                 }
             }
-
             if (crHr != null && crHr.length > 0) {
                 hrDrop.val(crHr);
             }
@@ -1172,15 +1168,15 @@ function TimeChooser(selector, incr, hr24) {
                 mnDrop.val(crMn);
             }
         });
-        $(document).on('click', function (e) {
+        $(document).on('click', function(e) {
             if (($(e.target).closest($ths).length == 0) && ($(e.target).closest(divhldr).length == 0)) {
                 divhldr.hide();
             }
         });
-        divhldr.focusin(function (ev) {
+        divhldr.focusin(function(ev) {
             ev.stopPropagation()
         });
-        $('body').focusin(function () {
+        $('body').focusin(function() {
             divhldr.hide();
         });
     });
@@ -1204,23 +1200,25 @@ function select_all(el) {
         textRange.select();
     }
 }
-String.prototype.toProperCase = function () {
-    return this.toLowerCase().replace(/\b((m)(a?c))?(\w)/g,
-    function ($1, $2, $3, $4, $5) { if ($2) { return $3.toUpperCase() + $4 + $5.toUpperCase(); } return $1.toUpperCase(); });
+String.prototype.toProperCase = function() {
+    return this.toLowerCase().replace(/\b((m)(a?c))?(\w)/g, function($1, $2, $3, $4, $5) {
+        if ($2) {
+            return $3.toUpperCase() + $4 + $5.toUpperCase();
+        }
+        return $1.toUpperCase();
+    });
 }
-
 function runProperCase(ele) {
     return ele.value = ele.value.toProperCase();
 }
-
-$(document).ready(function () {
-    $(".autocloseform").click(function (e) {
+$(document).ready(function() {
+    $(".autocloseform").click(function(e) {
         e.preventDefault();
         var _this = $(this);
         var _form = _this.closest("form");
         var validator = _form.validate(); // obtain validator
         var anyError = false;
-        _form.find("input").each(function () {
+        _form.find("input").each(function() {
             if (!validator.element(this)) {
                 anyError = true;
             }
@@ -1232,16 +1230,20 @@ $(document).ready(function () {
         if (_this.attr('name') != null && _this.attr('value') != null) {
             btnnmvl = '&' + encodeURI(_this.attr('name')) + '=' + encodeURI(_this.attr('value'));
         }
-        $.post(_form.attr("action"), _form.serialize()+btnnmvl, function (data) {
+        $.post(_form.attr("action"), _form.serialize() + btnnmvl, function(data) {
             loadscr();
             $("body").html(data);
-        }).fail(function (xhr, status, error) {
+        }).fail(function(xhr, status, error) {
             // error handling
             var modelStateErrors = xhr.responseJSON;
             if (modelStateErrors != null) {
-                for (var i = 0; i < modelStateErrors.length; i++) { $('span[data-valmsg-for="' + modelStateErrors[i].key + '"]').text(modelStateErrors[i].errors[0]); }
-            } else { alert(status + "\n" + error); }
-        }).done(function (msg) {
+                for (var i = 0; i < modelStateErrors.length; i++) {
+                    $('span[data-valmsg-for="' + modelStateErrors[i].key + '"]').text(modelStateErrors[i].errors[0]);
+                }
+            } else {
+                alert(status + "\n" + error);
+            }
+        }).done(function(msg) {
             unloadscr();
             $("body").html(msg);
         });
@@ -1249,7 +1251,8 @@ $(document).ready(function () {
 });
 function loadscr() {
     $("content").hide();
-    $("div#loadingContent").slideDown(); setTimeout(function () {
+    $("div#loadingContent").slideDown();
+    setTimeout(function() {
         $("#revertLoad").show();
     }, 15000);
 }
@@ -1274,14 +1277,13 @@ function popitup(url, nm) {
         newwindows[nm].focus();
     }
 }
-function popclose(trg,url) {
-    if (trg != null && url!=null) {
+function popclose(trg, url) {
+    if (trg != null && url != null) {
         var tg = findelement(trg);
         $("#btn" + trg).show();
         tg.load(url);
     }
 }
-
 function submtFrm(ele) {
     var ths = $(ele);
     var t = ths.closest("form");
