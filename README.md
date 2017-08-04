@@ -19,8 +19,13 @@ Execute inline
 ### Follow up form fields
 dropdowns with a follow up question, with a div of an id with the name and value, when selected, its visible
  ` <select onchange="subOptions(this)" id=SL1><option>BB</option><option>CC</option></select>`
- 
  ` <div id="SL1CC" class=hide><input type=text />not seen</div>`
+To update a second dropdown based on the first selection 
  ` carryoverdrop("select#id1","select#id2");`
+ The option value of the first filters out by option classes in the second
+ For instance 
+ 
+ First  `<option value="b1">BB</option>`
+ Second `<option class=b1>B1</option>`
 
 For more example see: https://jsfiddle.net/yvhg4L4r/2/
