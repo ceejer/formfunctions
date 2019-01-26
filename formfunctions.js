@@ -1185,7 +1185,7 @@ function TimeChooser(selector, incr, hr24) {
             var mnDrop = divhldr.find(".PickMinute");
             var pmDrop = divhldr.find(".PickPAM");
             var crHr = "0", crMn = "0", crPAM = "AM";
-            var myRegexp = /^(\d{1,2})([\:\.]?\d{1,2})?([ ]?[a|p]m?)?$/ig;
+            var myRegexp = /^([0-2]?\d)([\:\.]?\d{1,2})?([ ]?[a|p]m?)?$/ig;
             var res = myRegexp.exec(str);
             if (res!=null && res[1] != null && res[1].length > 0) {
                 crHr = res[1];
@@ -1240,17 +1240,6 @@ function zt10(t) {
         return t;
 }
 
-function dataConventions(vl) {
-    var val = replaceSpecialChars(vl);
-    val = val.replace(/[^a-zA-Z0-9\s\&\#]/g, "").replace(/([\b\w\s])(\&)([\b\w\s])/ig, "$1 & $3");
-    val = val.replace(/\b(company)\b/ig, "CO").replace(/\b(number|no)\s{0,}(\d+)\b/ig, "#$2").replace(/\b(incorporated)\b/ig, "INC").replace(/\b(corporation)\b/ig, "CORP").replace(/\bno\s{0,}(\d+)\b/ig, "#$1")
-    .replace(/\b(crk?)\b/ig, "CREEK").replace(/\b(coa)\b/ig, "COAL").replace(/\b(bros)\b/ig, "BROTHERS").replace(/\b(is)\b/ig, "ISLAND").replace(/\b(pgh)\b/ig, "PITTSBURGH")
-    .replace(/\b(mng)\b/ig, "MINING").replace(/\b(JCT)\b/ig, "JUNCTION").replace(/\b(fk)\b/ig, "FORK").replace(/\b(spn?gs?)\b/ig, "SPRINGS").replace(/\b(mtn)\b/ig, "MOUNTAIN").replace(/\b(mt)\b/ig, "MOUNT")
-    .replace(/\b(unkn?)\b/ig, "UNKNOWN").replace(/\b(and)\b/ig, " & ");
-
-    val = val.replace(/\s+/g, " ");
-    return $.trim(val).toUpperCase();
-}
 function select_all(el) {
     if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
         var range = document.createRange();
