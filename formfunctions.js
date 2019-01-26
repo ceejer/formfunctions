@@ -715,13 +715,13 @@ function runTimer(d2) {
 
 function AgeCalc(elem, divid, nxelem, options) {
     var dateFormat = "mm/dd/yy";
-    if (jdateformat != null && jdateformat.length > 0)
-        dateFormat = jdateformat;
+    
     if (typeof elem != "undefined" && elem != null) {
+        var typ = $.type(elem);
         var fromdate, todate;
-        if ($.type(elem) === "date")
+        if (typ === "date")
             fromdate = elem;
-        else if ($.type(elem) === "string") {
+        else if (typ === "string") {
             var isdt = $.datepicker.parseDate(dateFormat, elem);
             if (isdt != null && !isNaN(isdt)) {
                 fromdate = isdt;
@@ -730,6 +730,9 @@ function AgeCalc(elem, divid, nxelem, options) {
                 if (val != null && val.length > 0)
                     fromdate = $.datepicker.parseDate(dateFormat, val);
             }
+        } else if (typ === "object") {
+            var vl = elem.value;
+            fromdate = $.datepicker.parseDate(dateFormat, vl);
         }
         if ($.type(fromdate) !== "date" || isNaN(fromdate))
             return;
