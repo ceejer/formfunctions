@@ -1178,48 +1178,30 @@ function TimeChooser(selector, incr, hr24) {
             if (curMin != null && curMin.length > 0)
                 divhldr.find(".PickMinute").val(curMin);
         });
-        $ths.on('change', function () {
-            var hrDrop = divhldr.find(".PickHour");
-            var mnDrop = divhldr.find(".PickMinute");
-            var pmDrop = divhldr.find(".PickPAM");
-            var $blr = $(this);
-            var newt = zt10(hrDrop.val()) + "" + zt10(mnDrop.val()) + "";
-            if (!militarytime)
-                newt = hrDrop.val() + ":" + zt10(mnDrop.val()) + " " + pmDrop.val();
-            $blr.val(newt);
-        });
-        $ths.on('keyup', function (e) {
+        $ths.on('blur ', function (e) {
             var $kyp = $(this);
             var str = $kyp.val();
             var hrDrop = divhldr.find(".PickHour");
             var mnDrop = divhldr.find(".PickMinute");
             var pmDrop = divhldr.find(".PickPAM");
-            var crHr = "", crMn = "0", crPAM = "AM";
-            switch (e.which) {
-                case 9:
-                case 10:
-                case 13:
-                    break;
-                default:
-                    var myRegexp = /^(\d{1,2})([\:\.]?\d{1,2})?([ ]?[a|p]m?)?$/ig;
-                    var res = myRegexp.exec(str);
-                    if (res[1] != null && res[1].length > 0) {
-                        crHr = res[1];
-                        if (res[2] != null && res[2].length > 0) {
-                            crMn = res[2].replace(/[\:\.]/g, "");
-                            var rating = parseInt(crMn);
-                            if (isNaN(rating))
-                                rating = 0;
-                            crMn = (Math.round(rating / (steps / 60)) * (steps / 60)).toFixed(0);
-                        }
-                        if (res[3] != null && res[3].length > 0)
-                            crPAM = $.trim(res[3]).replace(/([a|p])m?/i, "$1m").toUpperCase();
-                    }
-                    break;
-            }
+            var crHr = "0", crMn = "0", crPAM = "AM";
+            var myRegexp = /^(\d{1,2})([\:\.]?\d{1,2})?([ ]?[a|p]m?)?$/ig;
+            var res = myRegexp.exec(str);
+            if (res!=null && res[1] != null && res[1].length > 0) {
+                crHr = res[1];
+                if (res[2] != null && res[2].length > 0) {
+                    crMn = res[2].replace(/[\:\.]/g, "");
+                    var rating = parseInt(crMn);
+                    if (isNaN(rating))
+                        rating = 0;
+                    crMn = (Math.round(rating / (steps / 60)) * (steps / 60)).toFixed(0);
+                }
+                if (res[3] != null && res[3].length > 0)
+                    crPAM = $.trim(res[3]).replace(/([a|p])m?/i, "$1m").toUpperCase();
+            }             
             if (!militarytime) {
                 if (parseInt(crHr) > 12) {
-                    crHr = parseInt(crHr) - 12;
+                    crHr = (parseInt(crHr) - 12)+"";
                     pmDrop.val("PM");
                 } else {
                     pmDrop.val(crPAM);
@@ -1232,6 +1214,11 @@ function TimeChooser(selector, incr, hr24) {
             if (crMn != null && crMn.length > 0) {
                 mnDrop.val(crMn);
             }
+
+            var newt = zt10(hrDrop.val()) + "" + zt10(mnDrop.val()) + "";
+            if (!militarytime)
+                newt = hrDrop.val() + ":" + zt10(mnDrop.val()) + " " + pmDrop.val();
+            $ths.val(newt);
         });
         $(document).on('click', function (e) {
             if (($(e.target).closest($ths).length == 0) && ($(e.target).closest(divhldr).length == 0)) {
