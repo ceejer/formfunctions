@@ -1070,6 +1070,7 @@ function TimeChooser(selector, incr, hr24) {
     var steps = 900;
     var militarytime = false;
     var timePicker = $('.timePicker');
+    militarytime = timePicker.hasClass("military");
     if (selector != null) {
         if ($.type(selector) !== "number" && $.type(selector) !== "boolean")
             timePicker = findelement(selector);
@@ -1084,9 +1085,10 @@ function TimeChooser(selector, incr, hr24) {
         else if ($.type(incr) == "boolean")
             militarytime = incr;
     }
+    
     if (hr24 != null && $.type(hr24) == "boolean")
         militarytime = hr24;
-
+    
     timePicker.each(function () {
         var $ths = $(this);
         var thsvl = $ths.val();
@@ -1187,29 +1189,31 @@ function TimeChooser(selector, incr, hr24) {
             var crHr = "0", crMn = "0", crPAM = "AM";
             var myRegexp = /^([0-2]?\d)([\:\.]?\d{1,2})?([ ]?[a|p]m?)?$/ig;
             var res = myRegexp.exec(str);
-            if (res!=null && res[1] != null && res[1].length > 0) {
+            if (res != null && res[1] != null && res[1].length > 0) {
                 crHr = res[1];
                 if (res[2] != null && res[2].length > 0) {
                     crMn = res[2].replace(/[\:\.]/g, "");
                     var rating = parseInt(crMn);
                     if (isNaN(rating))
                         rating = 0;
-                    crMn = (Math.round(rating / (steps / 60)) * (steps / 60)).toFixed(0);
+                    crMn = (Math.round(rating / (steps / 60)) * (steps / 60)).toFixed(0)+"";
                 }
                 if (res[3] != null && res[3].length > 0)
                     crPAM = $.trim(res[3]).replace(/([a|p])m?/i, "$1m").toUpperCase();
-            }             
+            }
+            var iHr = parseInt(crHr);
             if (!militarytime) {
-                if (parseInt(crHr) > 12) {
-                    crHr = (parseInt(crHr) - 12)+"";
+                if (iHr==0) { iHr = 12; }
+                if (iHr > 12) {
+                    crHr = (iHr - 12)+"";
                     pmDrop.val("PM");
                 } else {
                     pmDrop.val(crPAM);
                 }
             }
 
-            if (crHr != null && crHr.length > 0) {
-                hrDrop.val(crHr);
+            if (iHr != null && iHr >= 0) {
+                hrDrop.val(iHr);
             }
             if (crMn != null && crMn.length > 0) {
                 mnDrop.val(crMn);
