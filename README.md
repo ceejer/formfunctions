@@ -28,4 +28,4 @@ To update a second dropdown based on the first selection
  First  `<option value="b1">BB</option>`
  Second `<option class=b1>B1</option>`
 
-For a live example see: https://jsfiddle.net/ceejer/drva1968/11/
+For a live example see: https://jsfiddle.net/ceejer/drva1968/11/show
